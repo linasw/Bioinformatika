@@ -75,34 +75,20 @@ def get_all_frequencies():
         dicodon_frequencies[record.name] = dicodon_frequency.values()
     return codon_frequencies, dicodon_frequencies
 
-def get_distance_matrix(frequencies):
-    first = numpy.array(list(frequencies['Lactococcus_phage']))
-    second = numpy.array(list(frequencies['KM389305.1']))
-    dist = numpy.linalg.norm(first - second)
-    return dist
-
-# def get_distance_matrix(frequencies):
-#     first = list(frequencies['Lactococcus_phage'])
-#     second = list(frequencies['KM389305.1'])
-#     third = list(frequencies['NC_028697.1'])
-#     data = [first, second, third]
-#     what = ['Lactococcus_phage', 'KM389305.1', 'NC_028697.1']
-#     df = pd.DataFrame(data, index=what)
-#     print(pd.DataFrame(distance_matrix(df.values, df.values), index=df.index))
-#     return data
+def print_distance_matrix(frequencies):
+    names = []
+    data = []
+    for key in frequencies:
+        names.append(key)
+        data.append(list(frequencies[key]))
+    df = pd.DataFrame(data, index=names)
+    print(pd.DataFrame(distance_matrix(df.values, df.values), index=df.index))
 
 
 codon_frequencies, dicodon_frequencies = get_all_frequencies()
-tmp = get_distance_matrix(codon_frequencies)
-# orf_list = find_orfs_with_trans(record.seq, table, min_pro_len)
-# codon_freq = get_codon_frequency(orf_list, codon_alphabet)
-# dicodon_freq = get_dicodon_frequency(orf_list, dicodon_alphabet)
-# for start, end, strand, pro in orf_list:
-#     print(
-#         "%s...%s - length %i, strand %i, %i:%i"
-#         % (pro[:30], pro[-3:], len(pro), strand, start, end)
-#     )
-# Lactococcus_phage KM389305.1 NC_028697.1 0.053314
 
+print('\nCodon distances:')
+print_distance_matrix(codon_frequencies)
 
-print("Hi")
+print('\nDicodon distances:')
+print_distance_matrix(dicodon_frequencies)
